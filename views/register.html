@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+  <div>this is register</div>
+  <form action="" id="register_form">
+    <div>
+      <label for="email">邮箱</label>
+      <input type="email" class="form-control" id="email" name="email" placeholder="Email">
+    </div>
+    <div>
+      <label for="nickname">昵称</label>
+      <input type="nickname" class="form-control" id="nickname" name="nickname" placeholder="Nickname">
+    </div>
+    <div>
+      <label for="password">密码</label>
+      <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+    </div>
+    <button type="submit">注册</button>
+  </form>
+
+  <script src="../node_modules/jquery/dist/jquery.js"></script>
+  <script type="text/javascript">
+    $('#register_form').on('submit', function (e) {
+      e.preventDefault()
+      let formData = $(this).serialize()
+      $.ajax({
+        url: '/register',
+        type: 'post',
+        data: formData,
+        dataType: "json",
+        success: function (data) {
+          console.log(data);
+          let code = data.err_code
+          if(code === 1) {
+            window.alert('邮箱已存在')
+          }
+          if(code === 2) {
+            window.alert('用户名已存在')
+          }
+          if(code === 500) {
+            console.log(code);
+            window.alert('服务器繁忙')
+          }
+          if(code === 0) {
+            window.location.href = '/'
+          }
+        }
+      })
+    })
+  </script>
+</body>
+</html>
